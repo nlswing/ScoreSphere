@@ -1,3 +1,7 @@
+	
+var connection = new signalR.HubConnectionBuilder().withUrl("/matchcenterhub").build();
+
+
 $(document).ready(function () {
     loadMatches();
     connection.start();
