@@ -1,5 +1,6 @@
 using ScoreSphere.Models;
 using Microsoft.EntityFrameworkCore;
+using ScoreSphere.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,13 @@ builder.Services.AddDbContext<ScoreSphereDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Inject and use ScoreSphereService in controllers - register it with ASp.NET Core Dependency Injection
 builder.Services.AddScoped<IScoreSphereService, ScoreSphereService>();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IScoreSphereService, ScoreSphereService>();
+
 
 var app = builder.Build();
 
@@ -35,6 +43,8 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     endpoints.MapControllers();
+
+    endpoints.MapHub<MatchCenterHub>("/matchcenterhub");
 });
 
 app.Run();
