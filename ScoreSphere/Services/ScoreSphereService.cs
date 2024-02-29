@@ -20,6 +20,7 @@ public class ScoreSphereService : IScoreSphereService
             select new Match()
             {
                 Id = m.Id,
+                Date = m.Date,
                 Team1Id = t1.Id,
                 Team2Id = t2.Id,
                 Team1Name = t1.Name,
