@@ -20,3 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.small-logo {
+  max-width: 50px; /* Adjust the value based on your preference */
+  max-height: 50px; /* Adjust the value based on your preference */
+}

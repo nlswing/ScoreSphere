@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "MATCH CENTER LIVE";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to ScoreSphere</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<table class="table match-center">
+    <tbody id="listMatches">
+    </tbody>
+</table>
+
+@section Scripts{ 
+    @* <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script> *@
+    <script src="~/js/home.js"></script>
+}
