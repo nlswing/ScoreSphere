@@ -24,7 +24,7 @@ public class ScoreSphereService : IScoreSphereService
                 Team1Id = t1.Id,
                 Team2Id = t2.Id,
                 Team1Name = t1.Name,
-                Team2Name = t2.Name,
+                Team2Name = t2.Name,  
                 Team1Logo = t1.Logo,
                 Team2Logo = t2.Logo,
                 Team1Goals = m.Team1Goals ?? 0,
