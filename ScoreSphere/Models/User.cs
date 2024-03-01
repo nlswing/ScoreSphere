@@ -1,11 +1,15 @@
+
 namespace ScoreSphere.Models;
 using System.ComponentModel.DataAnnotations;
+
 using System;
 using System.Text.RegularExpressions;
 
 public class User
 {
+
   [Key]
+
   public int Id { get; set; }
   public string Email { get; set; }
   public string Password { get; set; }
@@ -14,7 +18,10 @@ public class User
   public int Points { get; set; }
   public string Achievements { get; set; }
   public int MatchesAttended {get; set;}
-  public User(int id, string email, string password, string name, string photo, int points, string achievements)
+
+  public User(int id, string email, string password, string name, string photo, int points, string achievements, int matchesattended)
+
+
   {
     this.Id = id;
     this.Email = email;
@@ -23,6 +30,8 @@ public class User
     this.Photo = photo;
     this.Points = points;
     this.Achievements = achievements;
+    this.MatchesAttended = matchesattended;
+
   }
 
   public bool CheckValidEmail() {
@@ -64,6 +73,12 @@ public class User
     return HasUppercase && HasNumber && HasSpecialCharacter;
   }
 
+
+  public List<String> GetAchievements() 
+  {
+
+    return new List<String>();
+
     public void AwardAchievement(String achievement)
     {
      this.Achievements = this.Achievements + "'" + achievement + "',";
@@ -88,6 +103,7 @@ public class User
     }
     if (UserAchievements.Count <= 0) {UserAchievements.Add("NO ACHIEVEMENTS ❌");}
     return UserAchievements;
+
   }
 
   public User()
