@@ -5,6 +5,7 @@ public class ScoreSphereDbContext : DbContext
 {
     internal DbSet<Match>? Matches { get; set; }
     internal DbSet<Team>? Teams { get; set; }
+    internal DbSet<User> Users {get; set;}
 
     internal string? DbPath { get; }
 

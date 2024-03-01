@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ScoreSphere.Models;
@@ -11,9 +12,11 @@ using ScoreSphere.Models;
 namespace ScoreSphere.Migrations
 {
     [DbContext(typeof(ScoreSphereDbContext))]
-    partial class ScoreSphereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240301103254_UserTableUpdated")]
+    partial class UserTableUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
