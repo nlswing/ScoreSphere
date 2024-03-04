@@ -14,7 +14,7 @@ public class User
   public int Points { get; set; }
   public string Achievements { get; set; }
   public int MatchesAttended {get; set;}
-  public User(int id, string email, string password, string name, string photo, int points, string achievements)
+  public User(int id, string email, string password, string name, string photo, int points, string achievements, int matchesAttended)
   {
     this.Id = id;
     this.Email = email;
@@ -23,6 +23,7 @@ public class User
     this.Photo = photo;
     this.Points = points;
     this.Achievements = achievements;
+    this.MatchesAttended = matchesAttended;
   }
 
   public bool CheckValidEmail() {
@@ -66,7 +67,7 @@ public class User
 
     public void AwardAchievement(String achievement)
     {
-     this.Achievements = this.Achievements + "'" + achievement + "',";
+     this.Achievements = this.Achievements + '"' + achievement + "\",\"";
     }
 
   public List<String> GetAchievements() 

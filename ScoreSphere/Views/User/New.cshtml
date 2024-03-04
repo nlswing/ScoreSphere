@@ -1,5 +1,6 @@
 @{
     ViewData["Title"] = "Sign-Up Page";
+    Layout = "_Layout";
 }
 <!DOCTYPE html>
 <html>
@@ -14,5 +15,5 @@
             <input type='submit' id='submit' value='Submit'/>
             <p style="color: red;text-align: center;">@TempData["MESSAGE"]</p>
           </form>
-          
+          <p style="color: rgba(0, 0, 0, 0.3);">Already have an account? Sign in <a href="/signin">here</a>!</p>
         </body>
