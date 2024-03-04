@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ScoreSphere.Models;
 
+
 public class UserController : Controller
-{
+{   
+    
     private readonly ScoreSphereDbContext _context;
 
     public UserController(ScoreSphereDbContext context)
@@ -10,9 +12,12 @@ public class UserController : Controller
         _context = context;
     }
 
+    
+
 
     [Route("/signup")]
     [HttpGet]
+    
     public IActionResult New()
     {
         return View();
@@ -22,6 +27,7 @@ public class UserController : Controller
 
     [Route("/users")]
     [HttpPost]
+  
     public RedirectResult Create(User user)
     {
         bool email_Exists = false;
@@ -54,8 +60,48 @@ public class UserController : Controller
             _context.SaveChanges();
 
             HttpContext.Session.SetInt32("user_id", user.Id);
-            return new RedirectResult("api/Matches");
+            
+            //return new RedirectResult("api/Matches");
+
+            return new RedirectResult("/signin");
         }
+    }
+
+    [Route("/signin")]
+    [HttpGet]
+    public IActionResult Signin()
+    {
+        return View();
+    }
+
+    [Route("/signin")]
+    [HttpPost]
+    public RedirectResult Create(string email, string password) {
+    
+      User? user = null;
+      var m = TempData["MESSAGE"];
+      try 
+      {
+        if (_context.Users != null) {
+          user = _context.Users.Where(user => user.Email == email).First();
+        }
+      }
+      catch {
+        TempData["MESSAGE"] = "Account does not exist.";
+        return new RedirectResult("/signin");
+      }
+      if(user != null && user.Password == password)
+      {
+        HttpContext.Session.SetInt32("user_id", user.Id);
+        Console.WriteLine("User ID:");
+        Console.WriteLine(user.Id);
+        return new RedirectResult("api/Matches");
+      }
+      else
+      {
+        TempData["MESSAGE"] = "Incorrect Password";
+        return new RedirectResult("/signin");
+      }
     }
 
 }

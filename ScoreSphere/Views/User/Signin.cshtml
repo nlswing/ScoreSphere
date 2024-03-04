@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Sign-In Page";
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="site.css">
+    </head>
+        <body>
+          <form action="/signin" method="post" class="signup-form">
+            <input type='text' id='email' name='email' placeholder='Email' required/>
+            <input type='password' id='password' name='password' placeholder="Password" required/>
+            <input type='submit' id='submit' value='Submit' />
+            <p style="color: red;text-align: center;">@TempData["MESSAGE"]</p>
+          </form>
+        </body>

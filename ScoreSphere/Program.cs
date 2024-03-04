@@ -2,10 +2,19 @@ using ScoreSphere.Models;
 using Microsoft.EntityFrameworkCore;
 using ScoreSphere.Hubs;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(600);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Add database context
 builder.Services.AddDbContext<ScoreSphereDbContext>(options =>
@@ -19,6 +28,12 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IScoreSphereService, ScoreSphereService>();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(600);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -41,10 +56,18 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.UseSession();
 
     endpoints.MapControllers();
 
     endpoints.MapHub<MatchCenterHub>("/matchcenterhub");
 });
+
+
+
+
+
+
+
 
 app.Run();

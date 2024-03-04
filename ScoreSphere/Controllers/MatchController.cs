@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScoreSphere.Models;
 
 namespace ScoreSphere.Controllers;
 
 [ApiController]
+// [Authorize]
 public class MatchController : ControllerBase
 {
     private readonly IScoreSphereService _scoresphereService;  
@@ -17,8 +19,11 @@ public class MatchController : ControllerBase
     [HttpGet]
     [Route("api/Matches")]
     public async Task<IEnumerable<Match>> GetMatchesAsync()
-    {
+    {   
+                  
+
         return await _scoresphereService.GetMatchesAsync();
+        
     }
  
     
@@ -28,4 +33,5 @@ public class MatchController : ControllerBase
     {
         await _scoresphereService.UpdateMatchAsync(model); 
     }
+
 }
