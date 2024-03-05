@@ -3,38 +3,39 @@ const connection = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-async function start() {
-    try {
-        await connection.start();
-        console.log("SignalR Connected.");
-    } catch (err) {
-        console.log(err);
-        setTimeout(start, 5000);
-    }
-};
+
+$(document).ready(function () {
+    loadMatches();
+    connection.start()
+});
+
+var allMatches = [];
 
 connection.onclose(async () => {
     await start();
 });
 
-// Start the connection.
-start();
-
-$(document).ready(function () {
-    loadMatches();
-    connection.start();
-});
-
 function loadMatches() {
+    console.log("Loading matches...");
     $.get("/api/Matches", null, function (response) {
-        // Sort matches by the name of the first team
+        console.log("Received matches from API:", response);
+
+        allMatches = response;
+
+        
+
         response.sort(function(a, b) {
-            var nameA = a.team1Name.toUpperCase();
-            var nameB = b.team1Name.toUpperCase();
-            return nameA.localeCompare(nameB);
+            var dateA = new Date(a.date);
+            var dateB = new Date(b.date);
+            return dateA - dateB;
         });
 
+        console.log("Sorted matches:", response);
+
+        // Call bindMatches after sorting is complete
         bindMatches(response);
+        console.log("Matches loaded successfully.");
+        
     });
 }
 
@@ -44,6 +45,17 @@ function bindMatches(matches) {
     $.each(matches,
         function(index, match) {
             html += "<tr data-match-id='" + match.id + "'>";
+
+            
+            html += "<td class='match-date'>";
+            var matchDate = new Date(match.date);
+            
+            
+            var formattedTime = matchDate.getHours().toString().padStart(2, '0') + ":" +
+                                matchDate.getMinutes().toString().padStart(2, '0');
+            
+            html += matchDate.toLocaleDateString() + " " + formattedTime;
+            html += "</td>";
 
             html += "<td>";
             html += "<img class='team-logo small-logo' src='/images/" + match.team1Logo + "'/>";
@@ -73,5 +85,30 @@ function bindMatches(matches) {
 }
 
 connection.on("RefreshMatchCenter", function (match) {
+    console.log("SignalR RefreshMatchCenter event received. Connection state:", connection.state);
     loadMatches();
 });
+
+
+function filterMatches(status) {
+    
+    var today = new Date();
+
+    
+    var filteredMatches = [];
+    switch (status) {
+        case 'all':
+            filteredMatches = allMatches;
+            break;
+        case 'scheduled':
+            filteredMatches = allMatches.filter(match => new Date(match.date) > today);
+            break;
+        case 'finished':
+            filteredMatches = allMatches.filter(match => new Date(match.date) <= today);
+            break;
+        default:
+            break;
+    }
+
+     bindMatches(filteredMatches);
+}
