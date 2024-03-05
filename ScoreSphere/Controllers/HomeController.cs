@@ -1,9 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
+using ScoreSphere.Models;
 
 
 
 public class HomeController : Controller
 {
+    private readonly ScoreSphereDbContext _context;
+
+    public HomeController(ScoreSphereDbContext context)
+    {
+        _context = context;
+    }
     public IActionResult Index()
     {
         Console.WriteLine($"ViewBag: {ViewBag.Id}");
@@ -15,5 +22,84 @@ public class HomeController : Controller
         return View();
     }
 
-}
+    [Route("admin/NewMatch")]
+    [HttpGet]
+    public IActionResult NewMatch()
+    {
+        return View();
+    }
 
+    [Route("/NewMatch")]
+    [HttpPost]
+
+    public IActionResult Create(Match match, string team1name, string team2name, IFormFile team1logoFile, IFormFile team2logoFile, DateTime matchdate, TimeSpan matchtime)
+    {
+        var currentUserId = HttpContext.Session.GetInt32("user_id");
+
+        // Combine date and time to create a DateTime object
+        DateTime matchDateTime = matchdate.Date + matchtime;
+
+        // Convert matchDateTime to UTC if it's not already in UTC
+        if (matchDateTime.Kind != DateTimeKind.Utc)
+        {
+            matchDateTime = matchDateTime.ToUniversalTime();
+        }
+
+
+        var team1 = new Team
+        {
+            Name = team1name,
+            Logo = UploadLogo(team1logoFile)
+        };
+
+
+        var team2 = new Team
+        {
+            Name = team2name,
+            Logo = UploadLogo(team2logoFile)
+        };
+
+
+        _context.Teams.Add(team1);
+        _context.Teams.Add(team2);
+        _context.SaveChanges();
+
+
+        match.Date = matchdate;
+        match.Team1Id = team1.Id;
+        match.Team2Id = team2.Id;
+        match.Team1Goals = 0;
+        match.Team2Goals = 0;
+        match.Team1Logo = team1.Logo;
+        match.Team2Logo = team2.Logo;
+        match.Date = matchDateTime;
+        match.UserId = currentUserId;
+
+
+        _context.Matches.Add(match);
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    private string UploadLogo(IFormFile logoFile)
+    {
+        if (logoFile != null && logoFile.Length > 0)
+        {
+            // Process the uploaded file (save to disk, database, etc.)
+            // For simplicity, save it to wwwroot/images folder with a unique filename
+            var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(logoFile.FileName)}";
+            var logoPath = $"wwwroot/images/{uniqueFileName}";
+
+            using (var stream = new FileStream(logoPath, FileMode.Create))
+            {
+                logoFile.CopyTo(stream);
+            }
+
+            // Return only the relative path
+            return $"{uniqueFileName}";
+        }
+
+        return null;
+    }
+}
