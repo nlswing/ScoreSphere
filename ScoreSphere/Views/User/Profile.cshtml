@@ -1,0 +1,71 @@
+@model ScoreSphere.Models.User
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_Layout";
+    string Achievements = string.Empty;
+    if(ViewBag.ProfileUser.Achievements == string.Empty){
+        Achievements = "None";
+    } else {
+        Achievements = ViewBag.ProfileUser.Achievements;
+    }
+    bool editingMode = false;
+}
+
+<div class="profile-container">
+    <div class="profile">
+        <div class="profile-header">
+            <h2>@Model.Name<img src="@ViewBag.ProfileUser.Photo" alt="Profile Picture" style="border-radius: 3px;width: 3%"></h2>
+        </div>
+        <ul>
+            <li>Points: @ViewBag.ProfileUser.Points</li>
+            <li>Achievements: @Achievements</li>
+            <li>Matches Attended: @ViewBag.ProfileUser.MatchesAttended</li>
+        </ul>
+        <div id="editProfileContainer">
+            @{
+                if(ViewBag.Viewer == ViewBag.ProfileUser){
+                    if(!editingMode){
+                        <a href="#" id="editProfileLink">Edit Profile</a>
+                        editingMode = true;
+                    } else {
+                        // Edit forms
+                    }
+                } else {
+                    // Follow function or something which allows users to interact with each other
+                }
+            }
+        </div>
+        <div id="editForms" style="display: none;">
+            <form action="/updateprofile" method="post" class="update-form">
+                <div class="form-column">
+                    <h6>Update Username</h6>
+                    <input type="text" name="newName" value="@ViewBag.ProfileUser.Name"/>
+                    <input type="submit" value="Submit"/>
+                </div>
+                <div class="form-column">
+                    <h6>Update Photo</h6>
+                    <input type="text" name="newPhoto" value="@ViewBag.ProfileUser.Photo"/>
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+            <div>
+                <a href="#" id="cancelEdit">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        document.getElementById('editProfileLink').addEventListener('click', function() {
+            document.getElementById('editProfileLink').style.display = 'none';
+            document.getElementById('editForms').style.display = 'block';
+        });
+
+        document.getElementById('cancelEdit').addEventListener('click', function() {
+            document.getElementById('editProfileLink').style.display = 'block';
+            document.getElementById('editForms').style.display = 'none';
+        });
+    </script>
+}

@@ -93,9 +93,8 @@ public class UserController : Controller
       if(user != null && user.Password == password)
       {
         HttpContext.Session.SetInt32("user_id", user.Id);
-        Console.WriteLine("User ID:");
-        Console.WriteLine(user.Id);
-        return new RedirectResult("api/Matches");
+        ViewBag.Id = user.Id;
+        return new RedirectResult("/");
       }
       else
       {
@@ -103,6 +102,75 @@ public class UserController : Controller
         return new RedirectResult("/signin");
       }
     }
+
+[Route("/User/Profile")]
+[HttpGet]
+public IActionResult RedirectToProfile(){
+  var currentUserId = HttpContext.Session.GetInt32("user_id");
+  if (currentUserId == null){
+    TempData["MESSAGE"] = "You must sign in first.";
+    return RedirectToAction("New");
+  } else {
+    return new RedirectResult($"/profile/{currentUserId.Value}");
+  }
+}
+
+[Route("/profile/{id}")]
+[HttpGet]
+public IActionResult Profile(int id)
+{
+    var currentUserId = HttpContext.Session.GetInt32("user_id");
+
+    if (currentUserId == null)
+    {
+        // Handle the case where user_id is not set
+        return RedirectToAction("Signin"); // Redirect to sign-in page
+    }
+
+    if (id == null){
+      return new RedirectResult($"/{id}");
+    }
+
+    User profileUser = _context.Users.Find(id);
+    User viewerUser = _context.Users.Find(currentUserId);
+
+    if (profileUser == null)
+    {
+        // Handle the case where the user with the specified id is not found
+        return NotFound();
+    }
+
+    // User viewing the page
+    ViewBag.Viewer = viewerUser;
+
+    // User's profile
+    ViewBag.ProfileUser = profileUser;
+
+    return View(profileUser);
+}
+
+
+
+  [Route("/updateprofile")]
+  [HttpPost]
+
+  public RedirectResult UpdateProfile(string newName, string newPhoto)
+  {
+    Console.WriteLine(1);
+    int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
+    Console.WriteLine(2);
+    User user = _context.Users.Find(currentUserId);
+    Console.WriteLine(3);
+    user.Name = newName;
+    Console.WriteLine(4);
+    user.Photo = newPhoto;
+    Console.WriteLine(5);
+    _context.Users.Update(user);
+    Console.WriteLine(6);
+    _context.SaveChanges();
+    Console.WriteLine(7);
+    return new RedirectResult($"/profile/{currentUserId}");
+  }
 
 }
 
