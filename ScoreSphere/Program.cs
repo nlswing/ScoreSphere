@@ -49,25 +49,25 @@ app.UseStaticFiles();
 
 app.UseRouting(); // Make sure UseRouting is called before UseAuthorization
 
+app.UseSession();
+
 app.UseAuthorization();
+
+
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
-        app.UseSession();
+       
+
+    endpoints.MapHub<MatchCenterHub>("/matchcenterhub");
 
     endpoints.MapControllers();
 
-    endpoints.MapHub<MatchCenterHub>("/matchcenterhub");
+    
 });
-
-
-
-
-
-
 
 
 app.Run();

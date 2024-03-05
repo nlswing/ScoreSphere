@@ -26,11 +26,11 @@ $(document).ready(function () {
 
 function loadMatches() {
     $.get("/api/Matches", null, function (response) {
-        // Sort matches by the name of the first team
+        // Sort matches by ascending date.
         response.sort(function(a, b) {
-            var nameA = a.team1Name.toUpperCase();
-            var nameB = b.team1Name.toUpperCase();
-            return nameA.localeCompare(nameB);
+            var dateA = new Date(a.date);
+            var dateB = new Date(b.date);
+            return dateA - dateB;
         });
 
         bindMatches(response);
@@ -45,6 +45,16 @@ function bindMatches(matches) {
     $.each(matches, function(index, match) {
         // Row for each match
         html += "<tr data-match-id='" + match.id + "'>";
+        
+        html += "<td class='match-date'>";
+            var matchDate = new Date(match.date);
+            
+            
+            var formattedTime = matchDate.getHours().toString().padStart(2, '0') + ":" +
+                                matchDate.getMinutes().toString().padStart(2, '0');
+            
+            html += matchDate.toLocaleDateString() + " " + formattedTime;
+            html += "</td>";
 
         // Team 1
         html += "<td>";
