@@ -25,8 +25,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav me-2">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile" asp-route-id="@ViewBag.Id">Profile</a>
+                            @if (ViewBag.currentUser != null && ViewBag.currentUser.GetNumberOfNotifications() != null)
+                            {
+                                <div class="nav-link text-dark position-relative">
+                                    <span class="badge bg-danger rounded-circle position-absolute top-25 start-100 translate-middle">
+                                        @ViewBag.currentUser.GetNumberOfNotifications()
+                                    </span>
+                                    <a href="#" aria-hidden="true" onclick="toggleNotifications()">🔔</a>
+                                    <div id="notificationDropdown" class="position-absolute" style="display: none; background-color: #fff; border-radius: 8px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 200px; left: -85px;">
+                                        @for (int i = 0; i < ViewBag.currentUser.GetNotificationsList().Length; i++)
+                                        {
+                                            var notification = ViewBag.currentUser.GetNotificationsList()[i];
+                                            <div style="padding: 5px;@(i == ViewBag.currentUser.GetNotificationsList().Length - 1 ? "border: none;" : "border-bottom: 1px solid #ccc;")">@notification</div>
+                                        }
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="nav-link text-dark" aria-hidden="true">🔔</span>
+                            }
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile" asp-route-id="@ViewBag.Id">
+                                My Profile
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NewMatch">My Matches</a>
@@ -36,6 +65,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -47,9 +77,16 @@
             &copy; 2024 - ScoreSphere - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function toggleNotifications() {
+            var dropdown = document.getElementById("notificationDropdown");
+            dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
