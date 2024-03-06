@@ -111,12 +111,12 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult EditMatch(int id)
     {
-        
+        // Fetch the match details based on the id
         var match = _context.Matches.FirstOrDefault(m => m.Id == id);
 
         if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
         {
-            
+            // Handle unauthorized access or non-existing match
             return RedirectToAction("Index");
         }
 
@@ -131,7 +131,7 @@ public class HomeController : Controller
 
         if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
         {
-            
+            // Handle unauthorized access or non-existing match
             return RedirectToAction("Index");
         }
 
