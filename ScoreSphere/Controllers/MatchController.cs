@@ -20,7 +20,7 @@ public class MatchController : ControllerBase
         _context = context;
     }
 
-    
+
 
 
     [HttpGet]
@@ -47,20 +47,20 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("api/UpdateLiveFixtures")]
-    public void StartUpdatingLiveFixtures()
-{
-    if (_updateTimer == null)
+    public void UpdateLiveFixtures()
     {
-        // Set up the timer to call UpdateLiveFixturesAsync every minute
-        _updateTimer = new Timer(UpdateLiveFixturesAsync, null, 0, 60 * 1000);
+        if (_updateTimer == null)
+        {
+            // Set up the timer to call UpdateLiveFixturesAsync every minute
+            _updateTimer = new Timer(UpdateLiveFixturesAsync, null, 0, 60 * 1000);
+        }
     }
-}
 
     private void UpdateLiveFixturesAsync(object? state)
     {
         _ = UpdateLiveFixturesAsync();
     }
-
+    [Route("api/[controller]/[action]")]
     public async Task UpdateLiveFixturesAsync()
     {
 
@@ -69,9 +69,10 @@ public class MatchController : ControllerBase
         // Wait for the asynchronous operation to complete and get the matches
         IEnumerable<Match> allMatches = await allMatchesTask;
         // going through all matches to see if it's live
+        DateTime currentTime = DateTime.Now;
         foreach (Match match in allMatches)
         {
-            if (IsFixtureLive(match, DateTime.Now))
+            if (match.UserId == null && IsFixtureLive(match, currentTime))
             {
                 // Fixture is live, randomize if team1 or team2 has scored
                 Random random = new Random();
