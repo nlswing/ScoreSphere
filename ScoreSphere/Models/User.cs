@@ -89,7 +89,7 @@ public class User
     if (isPoints){
       this.Notifications += $"Points awarded: {notification}🏅,";
     } else if (isAchievement){
-      this.Notifications += $"Task completed: {notification},";
+      this.Notifications += $"Task completed: {notification}🏆,";
     } else {
     this.Notifications += $"{notification},";
     }
