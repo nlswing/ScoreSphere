@@ -2,6 +2,7 @@ namespace ScoreSphere.Models;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 public class User
 {
@@ -14,7 +15,8 @@ public class User
   public int Points { get; set; }
   public string Achievements { get; set; }
   public int MatchesAttended {get; set;}
-  public User(int id, string email, string password, string name, string photo, int points, string achievements, int matchesAttended)
+  public string Notifications {get; set;}
+  public User(int id, string email, string password, string name, string photo, int points, string achievements, int matchesAttended, string notifications)
   {
     this.Id = id;
     this.Email = email;
@@ -24,6 +26,7 @@ public class User
     this.Points = points;
     this.Achievements = achievements;
     this.MatchesAttended = matchesAttended;
+    this.Notifications = notifications;
   }
 
   public bool CheckValidEmail() {
@@ -65,10 +68,61 @@ public class User
     return HasUppercase && HasNumber && HasSpecialCharacter;
   }
 
-    public void AwardAchievement(String achievement)
+  public void AwardAchievement(string achievement)
+  {
+    // Check if the achievement has already been achieved
+    if (this.Achievements.Contains(achievement))
     {
-     this.Achievements = this.Achievements + '"' + achievement + "\",\"";
+      // If the achievement is already achieved.
+    } else {
+
+      this.Points += 50;
+      AddNotification("50",true);
+      this.Achievements = this.Achievements + '"' + achievement + "\",\"";
+      AddNotification(achievement, false, true);
     }
+  }
+
+  public void AddNotification(string notification, bool isPoints=false, bool isAchievement=false)
+  {
+    // Check if the notification has already been added.
+    if (isPoints){
+      this.Notifications += $"Points awarded: {notification}🏅,";
+    } else if (isAchievement){
+      this.Notifications += $"Task completed: {notification},";
+    } else {
+    this.Notifications += $"{notification},";
+    }
+  }
+
+  public string GetNumberOfNotifications()
+  {
+    
+    if (this.Notifications == null)
+    {
+        return "0";
+    }
+
+    string[] splitNotis = this.Notifications.Split(',');
+
+    switch (splitNotis.Length - 1)
+    {
+        case var count when count < 10:
+            return $"{count}";
+        case var count when count > 9:
+            return $"9+";
+        default:
+            // Any unexpected errors
+            return "0";
+    }
+  }
+
+  public string[] GetNotificationsList()
+  {
+    string[] splitNotis = this.Notifications.Split(',');
+
+    return splitNotis;
+  }
 
   public List<String> GetAchievements() 
   {
@@ -76,18 +130,24 @@ public class User
     Achievements.Add("HOSTED A MATCH🤵");
     Achievements.Add("ADDED A PROFILE PICTURE🖼️");
     Achievements.Add("ATTENDED A MATCH🏟️");
+    Achievements.Add("CHANGED NAME📇");
 
 
     //checking users achievements
     List<String> UserAchievements = new List<String>();
-    foreach (String achievement in Achievements)
+    foreach (string achievement in Achievements)
     {
         if (this.Achievements.Contains(achievement)) 
         {
-            UserAchievements.Add(achievement);
+          UserAchievements.Add(achievement);
         }
     }
-    if (UserAchievements.Count <= 0) {UserAchievements.Add("NO ACHIEVEMENTS ❌");}
+    if (UserAchievements.Count <= 0) {
+      UserAchievements.Add("NO ACHIEVEMENTS ❌");
+      } else if (UserAchievements.Count >= 2 && UserAchievements.Contains("NO ACHIEVEMENTS ❌")){
+        UserAchievements.Remove("NO ACHIEVEMENTS ❌");
+      }
+
     return UserAchievements;
   }
 

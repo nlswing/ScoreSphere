@@ -4,9 +4,12 @@
     ViewData["Title"] = "Profile";
     Layout = "_Layout";
     string Achievements = string.Empty;
-    if(ViewBag.ProfileUser.Achievements == string.Empty){
-        Achievements = "None";
-    } else {
+    if (ViewBag.ProfileUser.Achievements == string.Empty)
+    {
+        Achievements = "NO ACHIEVEMENTS ❌";
+    }
+    else
+    {
         Achievements = ViewBag.ProfileUser.Achievements;
     }
     bool editingMode = false;
@@ -19,19 +22,54 @@
         </div>
         <ul>
             <li>Points: @ViewBag.ProfileUser.Points</li>
-            <li>Achievements: @Achievements</li>
+            @if (!string.IsNullOrEmpty(ViewBag.ProfileUser.Achievements))
+            {
+                <div id="achievementsContainer">
+                    <li>
+                        Achievements:
+                        <a href="#" id="viewAchievements">View Achievements</a>
+                    </li>
+                </div>
+                <!-- Achievement Pop-Up -->
+                <div id="achievementsPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <h3 style="text-align: center;">Achievements</h3>
+                    
+                    @foreach (var userAchievement in ViewBag.ProfileUser.GetAchievements())
+                    {
+                        <p>@userAchievement</p>
+                        <hr>
+                    }
+                    <p style="text-align: center;"><a href="#" id="closeAchievements">Close</a></p>
+                </div>
+            }
+            else
+            {
+                @foreach (var userAchievement in ViewBag.ProfileUser.GetAchievements())
+                {
+                    @if (userAchievement == "NO ACHIEVEMENTS ❌")
+                    {
+                        <li>Achievements: @Achievements</li>
+                    }
+                }
+            }
             <li>Matches Attended: @ViewBag.ProfileUser.MatchesAttended</li>
         </ul>
         <div id="editProfileContainer">
             @{
-                if(ViewBag.Viewer == ViewBag.ProfileUser){
-                    if(!editingMode){
+                if (ViewBag.Viewer == ViewBag.ProfileUser)
+                {
+                    if (!editingMode)
+                    {
                         <a href="#" id="editProfileLink">Edit Profile</a>
                         editingMode = true;
-                    } else {
+                    }
+                    else
+                    {
                         // Edit forms
                     }
-                } else {
+                }
+                else
+                {
                     // Follow function or something which allows users to interact with each other
                 }
             }
@@ -40,13 +78,13 @@
             <form action="/updateprofile" method="post" class="update-form">
                 <div class="form-column">
                     <h6>Update Username</h6>
-                    <input type="text" name="newName" value="@ViewBag.ProfileUser.Name"/>
-                    <input type="submit" value="Submit"/>
+                    <input type="text" name="newName" value="@ViewBag.ProfileUser.Name" />
+                    <input type="submit" value="Submit" />
                 </div>
                 <div class="form-column">
                     <h6>Update Photo</h6>
-                    <input type="text" name="newPhoto" value="@ViewBag.ProfileUser.Photo"/>
-                    <input type="submit" value="Submit"/>
+                    <input type="text" name="newPhoto" value="@ViewBag.ProfileUser.Photo" />
+                    <input type="submit" value="Submit" />
                 </div>
             </form>
             <div>
@@ -58,14 +96,24 @@
 
 @section scripts {
     <script>
-        document.getElementById('editProfileLink').addEventListener('click', function() {
+        document.getElementById('editProfileLink').addEventListener('click', function () {
             document.getElementById('editProfileLink').style.display = 'none';
             document.getElementById('editForms').style.display = 'block';
         });
 
-        document.getElementById('cancelEdit').addEventListener('click', function() {
+        document.getElementById('cancelEdit').addEventListener('click', function () {
             document.getElementById('editProfileLink').style.display = 'block';
             document.getElementById('editForms').style.display = 'none';
+        });
+
+        document.getElementById('viewAchievements').addEventListener('click', function () {
+            var popup = document.getElementById('achievementsPopup');
+            popup.style.display = 'block';
+        });
+
+        document.getElementById('closeAchievements').addEventListener('click', function () {
+            var popup = document.getElementById('achievementsPopup');
+            popup.style.display = 'none';
         });
     </script>
 }
