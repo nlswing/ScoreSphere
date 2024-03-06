@@ -68,11 +68,10 @@ public class MatchController : ControllerBase
         Task<IEnumerable<Match>> allMatchesTask = _scoresphereService.GetMatchesAsync();
         // Wait for the asynchronous operation to complete and get the matches
         IEnumerable<Match> allMatches = await allMatchesTask;
-        DateTime currentTime = DateTime.Now;
         // going through all matches to see if it's live
         foreach (Match match in allMatches)
         {
-            if (IsFixtureLive(match, currentTime))
+            if (IsFixtureLive(match, DateTime.Now))
             {
                 // Fixture is live, randomize if team1 or team2 has scored
                 Random random = new Random();
