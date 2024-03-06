@@ -1,0 +1,53 @@
+@{
+  ViewData["Title"] = "Create a Match";
+}
+
+<form action="/NewMatch" method="post" enctype="multipart/form-data" class="newmatch-form">
+
+  <fieldset>
+    <legend>Create a Match</legend>
+    <div>
+      <label>Date of Match<input type="date" name="matchdate" /></label>
+      <label>Time of Match<input type="time" name="matchtime" /></label>
+    </div>
+    <div>
+      <label>Team 1 Name <input type="text" name="team1name" /></label>
+      <label>Team 2 Name <input type="text" name="team2name" /></label>
+    </div>
+      <div>
+            <label>Team 1 Logo <input type="file" name="team1logoFile" accept="image/*" /></label>
+        </div>
+        <div>
+            <label>Team 2 Logo <input type="file" name="team2logoFile" accept="image/*" /></label>
+        </div>
+   
+      <input type="submit" id="submit" value="Submit" />
+    </div>
+  </fieldset>
+</form>
+
+
+<div>
+    <ul>
+        @{
+            foreach (Match match in ViewBag.Matches)
+            {
+                <li>
+                    Team 1: @match.Team1Name<br />
+                    Team 2: @match.Team2Name<br />
+                    Date: @match.Date?.ToShortDateString()<br />
+                    Time: @match.Date?.ToString("h:mm tt")<br />
+
+                    
+                    
+
+                  
+                    <form action="/admin/DeleteMatch" method="post">
+                        <input type="hidden" name="matchId" value="@match.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            }
+        }
+    </ul>
+</div>
