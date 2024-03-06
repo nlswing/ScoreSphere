@@ -26,9 +26,13 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult NewMatch()
     {
+        var currentUserId = HttpContext.Session.GetInt32("user_id");
+
+        // Filter matches by the current user ID
+        ViewBag.Matches = _context.Matches.Where(m => m.UserId == currentUserId).ToList();
+
         return View();
     }
-
     [Route("/NewMatch")]
     [HttpPost]
 
@@ -102,4 +106,39 @@ public class HomeController : Controller
 
         return null;
     }
+
+    [Route("admin/EditMatch/{id}")]
+    [HttpGet]
+    public IActionResult EditMatch(int id)
+    {
+        // Fetch the match details based on the id
+        var match = _context.Matches.FirstOrDefault(m => m.Id == id);
+
+        if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
+        {
+            // Handle unauthorized access or non-existing match
+            return RedirectToAction("Index");
+        }
+
+        return View(match);
+    }
+
+    [Route("admin/DeleteMatch")]
+    [HttpPost]
+    public IActionResult DeleteMatch(int matchId)
+    {
+        var match = _context.Matches.FirstOrDefault(m => m.Id == matchId);
+
+        if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
+        {
+            // Handle unauthorized access or non-existing match
+            return RedirectToAction("Index");
+        }
+
+        _context.Matches.Remove(match);
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
 }

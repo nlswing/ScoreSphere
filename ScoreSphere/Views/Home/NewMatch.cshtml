@@ -25,3 +25,29 @@
     </div>
   </fieldset>
 </form>
+
+
+<div>
+    <ul>
+        @{
+            foreach (Match match in ViewBag.Matches)
+            {
+                <li>
+                    Team 1: @match.Team1Name<br />
+                    Team 2: @match.Team2Name<br />
+                    Date: @match.Date?.ToShortDateString()<br />
+                    Time: @match.Date?.ToString("h:mm tt")<br />
+
+                    
+                    
+
+                  
+                    <form action="/admin/DeleteMatch" method="post">
+                        <input type="hidden" name="matchId" value="@match.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            }
+        }
+    </ul>
+</div>
