@@ -56,6 +56,7 @@ public class UserController : Controller
             user.Points = 0;
             user.Achievements = string.Empty;
             user.MatchesAttended = 0;
+            user.Notifications = string.Empty;
             _context.Users.Add(user);
             _context.SaveChanges();
 
