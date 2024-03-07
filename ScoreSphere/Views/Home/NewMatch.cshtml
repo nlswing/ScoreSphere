@@ -30,17 +30,17 @@
 
 
 
-<div>
+<div style="padding: 10px;">
     <ul style="list-style-type: none;">
         @{
             foreach (Match match in ViewBag.Matches)
             {
-                <li>
-                    Team 1: @match.Team1Name<br />
-                    Team 2: @match.Team2Name<br />
-                    Date: @match.Date?.ToShortDateString()<br />
-                    Time: @match.Date?.ToString("h:mm tt")<br />
-                    Status: @{
+                <li style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <strong>Team 1:</strong> @match.Team1Name<br />
+                    <strong>Team 2:</strong> @match.Team2Name<br />
+                    <strong>Date:</strong> @match.Date?.ToShortDateString()<br />
+                    <strong>Time:</strong> @match.Date?.ToString("h:mm tt")<br />
+                    <strong>Status:</strong> @{
                         if (match.IsLive.HasValue)
                         {
                             if (match.IsLive.Value)
@@ -57,22 +57,22 @@
                             <span style="color: gray;">Unknown</span>
                         }
                     }
-                    
 
-                     @if (match != null && match.Id != null)
+                    @if (match != null && match.Id != null)
                     {
-                        <form action="/ToggleLiveStatus" method="post">
+                        <form action="/ToggleLiveStatus" method="post" style="margin-top: 10px;">
                             <input type="hidden" name="matchId" value="@match.Id" />
-                            <button type="submit">Toggle Live Status</button>
+                            <button type="submit" style="padding: 5px 10px;">Change Match Status</button>
                         </form>
                     }
-                    
 
-                  
-                    <form action="/admin/DeleteMatch" method="post">
+                    <form action="/admin/DeleteMatch" method="post" style="margin-top: 5px;">
                         <input type="hidden" name="matchId" value="@match.Id" />
-                        <button type="submit">Delete</button>
+                        <button type="submit" style="padding: 5px 10px;">Delete</button>
                     </form>
+                    <form action="/admin" method="get" style="margin-top: 10px;">
+        <button type="submit" style="padding: 5px 10px;">Go to Admin Page</button>
+    </form>
                 </li>
             }
         }

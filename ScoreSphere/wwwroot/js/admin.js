@@ -45,48 +45,75 @@ function bindMatches(matches) {
     $.each(matches, function(index, match) {
         // Row for each match
         html += "<tr data-match-id='" + match.id + "'>";
-        
-        html += "<td class='match-date'>";
-            var matchDate = new Date(match.date);
-            
-            
-            var formattedTime = matchDate.getHours().toString().padStart(2, '0') + ":" +
-                                matchDate.getMinutes().toString().padStart(2, '0');
-            
-            html += matchDate.toLocaleDateString() + " " + formattedTime;
-            html += "</td>";
 
-        // Team 1
-        html += "<td>";
-        html += "<img class='team-logo small-logo' src='/images/" + match.team1Logo + "'/>";
-        html += "<span class='team-name'>" + match.team1Name + "</span>";
-        html += "</td>";
+html += "<td class='match-date'>";
+var matchDate = new Date(match.date);
 
-        // Team 1 Goals
-        html += "<td>";
-        html += "<span data-team-id='" + match.team1Id + "' class='team-goals'>" + match.team1Goals + "</span>";
-        html += "<input type='button' class='btn btn-success' value='Add Goal' data-match-id='" + match.id + "' data-team-id='" + match.team1Id + "' onclick='addGoal(this);' />";
-        html += "</td>";
+var formattedTime =
+  matchDate.getHours().toString().padStart(2, '0') +
+  ':' +
+  matchDate.getMinutes().toString().padStart(2, '0');
 
-        // Separator
-        html += "<td>";
-        html += "<span class='team-separator'> &mdash; </span>";
-        html += "</td>";
+html += matchDate.toLocaleDateString() + ' ' + formattedTime;
+html += '</td>';
 
-        // Team 2 Goals
-        html += "<td>";
-        html += "<span data-team-id='" + match.team2Id + "' class='team-goals'>" + match.team2Goals + "</span>";
-        html += "<input type='button' class='btn btn-success' value='Add Goal' data-match-id='" + match.id + "' data-team-id='" + match.team2Id + "' onclick='addGoal(this);' />";
-        html += "</td>";
+// Team 1
+html += "<td>";
+html +=
+  "<img class='team-logo small-logo' src='/images/" +
+  match.team1Logo +
+  "'/>";
+html += "<span class='team-name'>" + match.team1Name + '</span>';
+html += '</td>';
 
-        // Team 2
-        html += "<td>";
-        html += "<img class='team-logo small-logo' src='/images/" + match.team2Logo + "'/>";
-        html += "<span class='team-name'>" + match.team2Name + "</span>";
-        html += "</td>";
+// Team 1 Goals
+html += "<td>";
+html +=
+  "<span data-team-id='" +
+  match.team1Id +
+  "' class='team-goals' style='padding: 5px;'>" +
+  match.team1Goals +
+  '</span>';
+html +=
+  "<input type='button' class='btn btn-success' value='Add Goal' data-match-id='" +
+  match.id +
+  "' data-team-id='" +
+  match.team1Id +
+  "' onclick='addGoal(this);' style='padding: 5px; font-size: 12px;' />";
+html += '</td>';
 
-        // End of the row
-        html += "</tr>";
+// Separator
+html += "<td>";
+html += "<span class='team-separator'> &mdash; </span>";
+html += '</td>';
+
+// Team 2 Goals
+html += "<td>";
+html +=
+  "<span data-team-id='" +
+  match.team2Id +
+  "' class='team-goals' style='padding: 5px;'>" +
+  match.team2Goals +
+  '</span>';
+html +=
+  "<input type='button' class='btn btn-success' value='Add Goal' data-match-id='" +
+  match.id +
+  "' data-team-id='" +
+  match.team2Id +
+  "' onclick='addGoal(this);' style='padding: 5px; font-size: 12px;' />";
+html += '</td>';
+
+// Team 2
+html += "<td>";
+html +=
+  "<img class='team-logo small-logo' src='/images/" +
+  match.team2Logo +
+  "'/>";
+html += "<span class='team-name'>" + match.team2Name + '</span>';
+html += '</td>';
+
+// End of the row
+html += '</tr>';
     });
 
     // Append the HTML to the table

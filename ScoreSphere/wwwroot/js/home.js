@@ -44,42 +44,64 @@ function bindMatches(matches) {
     $("#listMatches").html("");
     $.each(matches,
         function(index, match) {
-            html += "<tr data-match-id='" + match.id + "'>";
+            html += "<tr data-match-id='" + match.id + "' style='margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;'>";
 
-            
-            html += "<td class='match-date'>";
-            var matchDate = new Date(match.date);
-            
-            
-            var formattedTime = matchDate.getHours().toString().padStart(2, '0') + ":" +
-                                matchDate.getMinutes().toString().padStart(2, '0');
-            
-            html += matchDate.toLocaleDateString() + " " + formattedTime;
-            html += "</td>";
+html += "<td class='match-date'>";
+var matchDate = new Date(match.date);
 
-            html += "<td>";
-            html += "<img class='team-logo small-logo' src='/images/" + match.team1Logo + "'/>";
-            html += "<span class='team-name'>" + match.team1Name + "</span>";
-            html += "</td>";
+var formattedTime =
+  matchDate.getHours().toString().padStart(2, '0') +
+  ':' +
+  matchDate.getMinutes().toString().padStart(2, '0');
 
-            html += "<td>";
-            html += "<span data-team-id='" + match.team1Id + "' class='team-goals'>" + match.team1Goals + "</span>";
-            html += "</td>";
+html += matchDate.toLocaleDateString() + ' ' + formattedTime;
+html += '</td>';
 
-            html += "<td>";
-            html += "<span class='team-separator'> &mdash; </span>";
-            html += "</td>";
+// Team 1
+html += "<td>";
+html +=
+  "<img class='team-logo small-logo' src='/images/" +
+  match.team1Logo +
+  "'/>";
+html += "<span class='team-name'>" + match.team1Name + '</span>';
+html += '</td>';
 
-            html += "<td>";
-            html += "<span data-team-id='" + match.team2Id + "' class='team-goals'>" + match.team2Goals + "</span>";
-            html += "</td>";
+// Team 1 Goals
+html += "<td>";
+html +=
+  "<span data-team-id='" +
+  match.team1Id +
+  "' class='team-goals' style='padding: 5px;'>" +
+  match.team1Goals +
+  '</span>';
+html += '</td>';
 
-            html += "<td>";
-            html += "<img class='team-logo small-logo' src='/images/" + match.team2Logo + "'/>";
-            html += "<span class='team-name'>" + match.team2Name + "</span>";
-            html += "</td>";
+// Separator
+html += "<td>";
+html += "<span class='team-separator'> &mdash; </span>";
+html += '</td>';
 
-            html += "</tr>";
+// Team 2 Goals
+html += "<td>";
+html +=
+  "<span data-team-id='" +
+  match.team2Id +
+  "' class='team-goals' style='padding: 5px;'>" +
+  match.team2Goals +
+  '</span>';
+html += '</td>';
+
+// Team 2
+html += "<td>";
+html +=
+  "<img class='team-logo small-logo' src='/images/" +
+  match.team2Logo +
+  "'/>";
+html += "<span class='team-name'>" + match.team2Name + '</span>';
+html += '</td>';
+
+// End of the row
+html += '</tr>';
         });
     $("#listMatches").append(html);
 }
