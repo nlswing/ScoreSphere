@@ -33,11 +33,13 @@ public class HomeController : Controller
     {
         var currentUserId = HttpContext.Session.GetInt32("user_id");
 
+
         // Filter matches by the current user ID and sort them by date
         ViewBag.Matches = _context.Matches
             .Where(m => m.UserId == currentUserId)
             .OrderBy(m => m.Date)
             .ToList();
+
 
 
         return View();
