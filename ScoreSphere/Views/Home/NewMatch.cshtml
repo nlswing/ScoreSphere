@@ -27,6 +27,8 @@
 </form>
 
 
+
+
 <div>
     <ul>
         @{
@@ -38,7 +40,13 @@
                     Date: @match.Date?.ToShortDateString()<br />
                     Time: @match.Date?.ToString("h:mm tt")<br />
 
-                    
+                     @if (match != null && match.Id != null)
+                    {
+                        <form action="/ToggleLiveStatus" method="post">
+                            <input type="hidden" name="matchId" value="@match.Id" />
+                            <button type="submit">Toggle Live Status</button>
+                        </form>
+                    }
                     
 
                   

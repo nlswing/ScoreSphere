@@ -14,7 +14,8 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var currentUserId = HttpContext.Session.GetInt32("user_id");
-        if (currentUserId != null){
+        if (currentUserId != null)
+        {
             User viewerUser = _context.Users.Find(currentUserId);
             ViewBag.currentUser = viewerUser;
         }
@@ -32,13 +33,14 @@ public class HomeController : Controller
     {
         var currentUserId = HttpContext.Session.GetInt32("user_id");
 
-        if (currentUserId == null)
-        {
-            return new RedirectResult("/signin"); // Redirect to sign-in page
-        }
 
-        // Filter matches by the current user ID
-        ViewBag.Matches = _context.Matches.Where(m => m.UserId == currentUserId).ToList();
+        // Filter matches by the current user ID and sort them by date
+        ViewBag.Matches = _context.Matches
+            .Where(m => m.UserId == currentUserId)
+            .OrderBy(m => m.Date)
+            .ToList();
+
+
 
         return View();
     }
@@ -149,5 +151,29 @@ public class HomeController : Controller
 
         return RedirectToAction("Index");
     }
+
+    // HomeController.cs
+
+    [HttpPost]
+    [Route("/ToggleLiveStatus")]
+    public IActionResult ToggleLiveStatus(int matchId)
+    {
+        // Retrieve the existing match from the database
+        var match = _context.Matches.FirstOrDefault(m => m.Id == matchId);
+
+        if (match != null)
+        {
+            // Toggle the IsLive status
+            match.IsLive = !match.IsLive;
+
+            // Save changes to the database
+            _context.SaveChanges();
+        }
+
+        // Redirect back to the index page or wherever appropriate
+        return RedirectToAction("NewMatch");
+    }
+
+
 
 }
