@@ -28,11 +28,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NewMatch">My Matches</a>
                         </li>
+                        @if (ViewBag.currentUser != null)
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="SignOut">Sign-Out</a>
+                        </li>
+                        }
                     </ul>
                     <ul class="navbar-nav me-2">
                         <li class="nav-item">
                             @if (ViewBag.currentUser != null && ViewBag.currentUser.GetNumberOfNotifications() != null)
                             {   
+                                //notifications
                                 if(ViewBag.currentUser.GetNumberOfNotifications() != "0"){
                                     <div class="nav-link text-dark position-relative">
                                         <span class="badge bg-danger rounded-circle position-absolute top-25 start-100 translate-middle">
@@ -46,7 +53,6 @@
                                                 <div style="padding: 5px;@(i == ViewBag.currentUser.GetNotificationsList().Length - 1 ? "border: none;" : "border-bottom: 1px solid #ccc;")">@notification</div>
                                             }
                                         </div>
-
                                     </div>
                                 } else {
                                     <span class="nav-link text-dark" aria-hidden="true">🔔</span>

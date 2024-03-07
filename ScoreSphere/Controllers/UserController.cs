@@ -68,6 +68,14 @@ public class UserController : Controller
         }
     }
 
+    [Route("/signout")]
+    [HttpGet]
+    public IActionResult SignOut()
+    {
+      HttpContext.Session.SetInt32("user_id", 0);
+      return new RedirectResult("/signin");
+    }
+
     [Route("/signin")]
     [HttpGet]
     public IActionResult Signin()
