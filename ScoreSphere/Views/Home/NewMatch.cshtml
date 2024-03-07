@@ -39,6 +39,24 @@
                     Team 2: @match.Team2Name<br />
                     Date: @match.Date?.ToShortDateString()<br />
                     Time: @match.Date?.ToString("h:mm tt")<br />
+                    Status: @{
+                        if (match.IsLive.HasValue)
+                        {
+                            if (match.IsLive.Value)
+                            {
+                                <span style="color: green;">Live</span>
+                            }
+                            else
+                            {
+                                <span style="color: red;">Not Live</span>
+                            }
+                        }
+                        else
+                        {
+                            <span style="color: gray;">Unknown</span>
+                        }
+                    }
+                    
 
                      @if (match != null && match.Id != null)
                     {

@@ -22,9 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NewMatch">My Matches</a>
                         </li>
@@ -32,21 +30,25 @@
                     <ul class="navbar-nav me-2">
                         <li class="nav-item">
                             @if (ViewBag.currentUser != null && ViewBag.currentUser.GetNumberOfNotifications() != null)
-                            {
-                                <div class="nav-link text-dark position-relative">
-                                    <span class="badge bg-danger rounded-circle position-absolute top-25 start-100 translate-middle">
-                                        @ViewBag.currentUser.GetNumberOfNotifications()
-                                    </span>
-                                    <a href="#" aria-hidden="true" onclick="toggleNotifications()">🔔</a>
-                                    <div id="notificationDropdown" class="position-absolute" style="display: none; background-color: #fff; border-radius: 8px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 200px; left: -85px;">
-                                        @for (int i = 0; i < ViewBag.currentUser.GetNotificationsList().Length; i++)
-                                        {
-                                            var notification = ViewBag.currentUser.GetNotificationsList()[i];
-                                            <div style="padding: 5px;@(i == ViewBag.currentUser.GetNotificationsList().Length - 1 ? "border: none;" : "border-bottom: 1px solid #ccc;")">@notification</div>
-                                        }
-                                    </div>
+                            {   
+                                if(ViewBag.currentUser.GetNumberOfNotifications() != "0"){
+                                    <div class="nav-link text-dark position-relative">
+                                        <span class="badge bg-danger rounded-circle position-absolute top-25 start-100 translate-middle">
+                                            @ViewBag.currentUser.GetNumberOfNotifications()
+                                        </span>
+                                        <a href="#" aria-hidden="true" onclick="toggleNotifications()">🔔</a>
+                                        <div id="notificationDropdown" class="position-absolute" style="display: none; background-color: #fff; border-radius: 8px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 200px; left: -85px;">
+                                            @for (int i = 0; i < ViewBag.currentUser.GetNotificationsList().Length; i++)
+                                            {
+                                                var notification = ViewBag.currentUser.GetNotificationsList()[i];
+                                                <div style="padding: 5px;@(i == ViewBag.currentUser.GetNotificationsList().Length - 1 ? "border: none;" : "border-bottom: 1px solid #ccc;")">@notification</div>
+                                            }
+                                        </div>
 
-                                </div>
+                                    </div>
+                                } else {
+                                    <span class="nav-link text-dark" aria-hidden="true">🔔</span>
+                                }
                             }
                             else
                             {
@@ -74,7 +76,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - ScoreSphere - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - ScoreSphere
         </div>
     </footer>
 
