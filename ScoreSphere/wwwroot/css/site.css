@@ -26,3 +26,109 @@ body {
   max-width: 50px; /* Adjust the value based on your preference */
   max-height: 50px; /* Adjust the value based on your preference */
 }
+
+/* Sign-Up Page */
+
+.signup-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #3e3e3e;
+  color: white; /* Set text color for better visibility */
+}
+
+.custom-container {
+  position: relative;
+  border: 2px solid black; /* Black outline */
+  border-radius: 8px;
+  background-color: rgba(62, 62, 62, 0.1); /* #3e3e3e with 0.1 transparency */
+  padding: 20px;
+  max-width: 40%; /* Set max-width to 60% */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.signup-form {
+  margin: 0 auto; /* Center the form horizontally */
+  text-align: center;
+}
+
+.signup-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color: #3e3e3e;
+  color: white;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #1e1e1e;
+}
+
+/* Profile Page */
+.profile-container {
+  border: 2px solid #3e3e3e;
+  background-color: rgba(62, 62, 62, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 0 auto; /* Center the container horizontally */
+  max-width: 40%;
+}
+
+.profile {
+  text-align: left; /* Left-align the content inside .profile */
+}
+
+/* Optionally, you can center the profile header text */
+.profile-header {
+  text-align: center;
+}
+
+/* Adjust the styling for the profile text */
+.profile p {
+  margin: 0; /* Remove default margin for better alignment */
+}
+
+/* Center the "Edit Profile" link */
+#editProfileLink, #cancelEdit {
+  display: block;
+  text-align: center; /* Center the text within the link */
+  margin: 0 auto;
+}
+
+.update-form {
+  text-align: center;
+}
+
+.update-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.update-form input[type="submit"],
+.update-form a {
+  display: inline-block;
+  margin: 0 auto;
+  background-color: #3e3e3e;
+  color: white;
+  cursor: pointer;
+  padding: 8px 16px; /* Adjust padding based on your preference */
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.update-form input[type="submit"]:hover,
+.update-form a:hover {
+  background-color: #1e1e1e;
+  margin-bottom: 10px;
+}
