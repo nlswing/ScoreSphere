@@ -29,7 +29,8 @@ public class ScoreSphereService : IScoreSphereService
                 Team2Logo = t2.Logo,
                 Team1Goals = m.Team1Goals ?? 0,
                 Team2Goals = m.Team2Goals ?? 0,
-                UserId = m.UserId
+                UserId = m.UserId,
+                IsLive = m.IsLive
             };
         return await query.ToListAsync();
     }

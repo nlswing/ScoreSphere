@@ -1,5 +1,6 @@
 namespace ScoreSphere.Models;
 using System.ComponentModel.DataAnnotations;
+using ScoreSphere.Migrations;
 
 public class Match
 {
@@ -19,8 +20,10 @@ public class Match
   public int? Team2Goals { get; set; }
 
   public int? UserId {get; set;}
-  
-  public Match(int Id, DateTime date, int t1id, int t2id, string t1name, string t2name, string t1logo, string t2logo, int t1goals, int t2goals, int userid)
+
+  public bool? IsLive {get; set;}
+  public Match(int Id, DateTime date, int t1id, int t2id, string t1name, string t2name, string t1logo, string t2logo, int t1goals, int t2goals, int userid, bool isLive)
+
   {
     this.Id = Id;
     this.Date = date;
@@ -33,6 +36,7 @@ public class Match
     this.Team1Goals = t1goals;
     this.Team2Goals = t2goals;
     this.UserId = userid;
+    this.IsLive = isLive;
   }
 
   public Match()

@@ -94,6 +94,7 @@ public class UserController : Controller
       {
         HttpContext.Session.SetInt32("user_id", user.Id);
         ViewBag.Id = user.Id;
+        ViewBag.currentUser = _context.Users.Find(user.Id);
         return new RedirectResult("/");
       }
       else
@@ -130,9 +131,10 @@ public IActionResult Profile(int id)
     if (id == null){
       return new RedirectResult($"/{id}");
     }
-
+    
     User profileUser = _context.Users.Find(id);
     User viewerUser = _context.Users.Find(currentUserId);
+    ViewBag.currentUser = viewerUser;
 
     if (profileUser == null)
     {
@@ -156,19 +158,22 @@ public IActionResult Profile(int id)
 
   public RedirectResult UpdateProfile(string newName, string newPhoto)
   {
-    Console.WriteLine(1);
     int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
-    Console.WriteLine(2);
     User user = _context.Users.Find(currentUserId);
-    Console.WriteLine(3);
+
+    if (newPhoto != "https://creativeandcultural.files.wordpress.com/2018/04/default-profile-picture.png?w=256"){
+      user.AwardAchievement("ADDED A PROFILE PICTURE🖼️");
+    }
+
+    if (newName != user.Name){
+      user.AwardAchievement("CHANGED NAME📇");
+    }
     user.Name = newName;
-    Console.WriteLine(4);
     user.Photo = newPhoto;
-    Console.WriteLine(5);
+
     _context.Users.Update(user);
-    Console.WriteLine(6);
     _context.SaveChanges();
-    Console.WriteLine(7);
+
     return new RedirectResult($"/profile/{currentUserId}");
   }
 

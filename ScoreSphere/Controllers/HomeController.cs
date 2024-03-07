@@ -13,7 +13,12 @@ public class HomeController : Controller
     }
     public IActionResult Index()
     {
-        Console.WriteLine($"ViewBag: {ViewBag.Id}");
+        var currentUserId = HttpContext.Session.GetInt32("user_id");
+        if (currentUserId != null)
+        {
+            User viewerUser = _context.Users.Find(currentUserId);
+            ViewBag.currentUser = viewerUser;
+        }
         return View();
     }
 
@@ -26,9 +31,19 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult NewMatch()
     {
+        var currentUserId = HttpContext.Session.GetInt32("user_id");
+
+
+        // Filter matches by the current user ID and sort them by date
+        ViewBag.Matches = _context.Matches
+            .Where(m => m.UserId == currentUserId)
+            .OrderBy(m => m.Date)
+            .ToList();
+
+
+
         return View();
     }
-
     [Route("/NewMatch")]
     [HttpPost]
 
@@ -102,4 +117,63 @@ public class HomeController : Controller
 
         return null;
     }
+
+    [Route("admin/EditMatch/{id}")]
+    [HttpGet]
+    public IActionResult EditMatch(int id)
+    {
+        // Fetch the match details based on the id
+        var match = _context.Matches.FirstOrDefault(m => m.Id == id);
+
+        if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
+        {
+            // Handle unauthorized access or non-existing match
+            return RedirectToAction("Index");
+        }
+
+        return View(match);
+    }
+
+    [Route("admin/DeleteMatch")]
+    [HttpPost]
+    public IActionResult DeleteMatch(int matchId)
+    {
+        var match = _context.Matches.FirstOrDefault(m => m.Id == matchId);
+
+        if (match == null || match.UserId != HttpContext.Session.GetInt32("user_id"))
+        {
+            // Handle unauthorized access or non-existing match
+            return RedirectToAction("Index");
+        }
+
+        _context.Matches.Remove(match);
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    // HomeController.cs
+
+    [HttpPost]
+    [Route("/ToggleLiveStatus")]
+    public IActionResult ToggleLiveStatus(int matchId)
+    {
+        // Retrieve the existing match from the database
+        var match = _context.Matches.FirstOrDefault(m => m.Id == matchId);
+
+        if (match != null)
+        {
+            // Toggle the IsLive status
+            match.IsLive = !match.IsLive;
+
+            // Save changes to the database
+            _context.SaveChanges();
+        }
+
+        // Redirect back to the index page or wherever appropriate
+        return RedirectToAction("NewMatch");
+    }
+
+
+
 }

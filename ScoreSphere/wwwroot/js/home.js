@@ -106,6 +106,10 @@ function filterMatches(status) {
         case 'finished':
             filteredMatches = allMatches.filter(match => new Date(match.date) <= today);
             break;
+        case 'live':
+        // Include matches with isLive set to True
+        filteredMatches = allMatches.filter(match => match.isLive);
+            break;
         default:
             break;
     }
