@@ -19,6 +19,7 @@ public class Match
   public int? Team2Goals { get; set; }
 
   public int? UserId {get; set;}
+  
   public Match(int Id, DateTime date, int t1id, int t2id, string t1name, string t2name, string t1logo, string t2logo, int t1goals, int t2goals, int userid)
   {
     this.Id = Id;

@@ -49,11 +49,12 @@ public class MatchController : ControllerBase
     [HttpGet("api/UpdateLiveFixtures")]
     public void UpdateLiveFixtures()
     {
-        if (_updateTimer == null)
-        {
-            // Set up the timer to call UpdateLiveFixturesAsync every minute
-            _updateTimer = new Timer(UpdateLiveFixturesAsync, null, 0, 60 * 1000);
-        }
+        // if (_updateTimer == null)
+        // {
+        //     // Set up the timer to call UpdateLiveFixturesAsync every minute
+        //     _updateTimer = new Timer(UpdateLiveFixturesAsync, null, 0, 60 * 1000);
+        // }
+        _ = UpdateLiveFixturesAsync();
     }
 
     private void UpdateLiveFixturesAsync(object? state)
@@ -65,14 +66,15 @@ public class MatchController : ControllerBase
     {
 
         Console.WriteLine("Running after a minute!");
-        Task<IEnumerable<Match>> allMatchesTask = _scoresphereService.GetMatchesAsync();
+        //Task<IEnumerable<Match>> allMatchesTask = _scoresphereService.GetMatchesAsync();
         // Wait for the asynchronous operation to complete and get the matches
-        IEnumerable<Match> allMatches = await allMatchesTask;
+        //IEnumerable<Match> allMatches = await allMatchesTask;
         // going through all matches to see if it's live
-        DateTime currentTime = DateTime.Now;
-        foreach (Match match in allMatches)
+        // DateTime currentTime = DateTime.Now;
+        Console.WriteLine(_context.Matches);
+        foreach (Match match in _context.Matches)
         {
-            if (match.UserId == null && IsFixtureLive(match, currentTime))
+            if (true)//match.UserId == null && IsFixtureLive(match, currentTime))
             {
                 // Fixture is live, randomize if team1 or team2 has scored
                 Random random = new Random();
