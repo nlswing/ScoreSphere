@@ -18,17 +18,16 @@
 <div class="profile-container">
     <div class="profile">
         <div class="profile-header">
-            <h2>@Model.Name<img src="@ViewBag.ProfileUser.Photo" alt="Profile Picture" style="border-radius: 3px;width: 3%"></h2>
+            <h2>@Model.Name<img src="@ViewBag.ProfileUser.Photo" alt="Profile Picture" style="border-radius: 3px;width: 5%"></h2>
         </div>
-        <ul>
-            <li>Points: @ViewBag.ProfileUser.Points</li>
+            <p>Points: @ViewBag.ProfileUser.Points</p>
             @if (!string.IsNullOrEmpty(ViewBag.ProfileUser.Achievements))
             {
                 <div id="achievementsContainer">
-                    <li>
+                    <p>
                         Achievements:
                         <a href="#" id="viewAchievements">View Achievements</a>
-                    </li>
+                    </p>
                 </div>
                 <!-- Achievement Pop-Up -->
                 <div id="achievementsPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -48,12 +47,11 @@
                 {
                     @if (userAchievement == "NO ACHIEVEMENTS ❌")
                     {
-                        <li>Achievements: @Achievements</li>
+                        <p>Achievements: @Achievements</p>
                     }
                 }
             }
-            <li>Matches Attended: @ViewBag.ProfileUser.MatchesAttended</li>
-        </ul>
+            <p>Matches Attended: @ViewBag.ProfileUser.MatchesAttended</p>
         <div id="editProfileContainer">
             @{
                 if (ViewBag.Viewer == ViewBag.ProfileUser)

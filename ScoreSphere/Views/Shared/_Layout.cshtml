@@ -24,7 +24,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NewMatch">My Matches</a>
                         </li>
@@ -39,7 +38,6 @@
                         <li class="nav-item">
                             @if (ViewBag.currentUser != null && ViewBag.currentUser.GetNumberOfNotifications() != null)
                             {   
-                                //notifications
                                 if(ViewBag.currentUser.GetNumberOfNotifications() != "0"){
                                     <div class="nav-link text-dark position-relative">
                                         <span class="badge bg-danger rounded-circle position-absolute top-25 start-100 translate-middle">
