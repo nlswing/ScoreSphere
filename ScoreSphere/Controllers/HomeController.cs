@@ -89,6 +89,7 @@ public class HomeController : Controller
         match.Team2Logo = team2.Logo;
         match.Date = matchDateTime;
         match.UserId = currentUserId;
+        match.IsLive = false;
 
 
         _context.Matches.Add(match);

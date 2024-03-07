@@ -56,6 +56,7 @@ public class UserController : Controller
             user.Points = 0;
             user.Achievements = string.Empty;
             user.MatchesAttended = 0;
+            user.Notifications = string.Empty;
             _context.Users.Add(user);
             _context.SaveChanges();
 
@@ -65,6 +66,14 @@ public class UserController : Controller
 
             return new RedirectResult("/signin");
         }
+    }
+
+    [Route("/signout")]
+    [HttpGet]
+    public IActionResult SignOut()
+    {
+      HttpContext.Session.SetInt32("user_id", 0);
+      return new RedirectResult("/signin");
     }
 
     [Route("/signin")]

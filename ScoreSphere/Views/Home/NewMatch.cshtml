@@ -4,24 +4,24 @@
 
 <form action="/NewMatch" method="post" enctype="multipart/form-data" class="newmatch-form">
 
-  <fieldset>
+  <fieldset style="padding: 10px;">
     <legend>Create a Match</legend>
-    <div>
-      <label>Date of Match<input type="date" name="matchdate" /></label>
-      <label>Time of Match<input type="time" name="matchtime" /></label>
+    <div style="margin-bottom: 10px;">
+      <label style="margin-right: 10px;">Date of Match<input type="date" name="matchdate" style="margin-left: 10px;" /></label>
+      <label>Time of Match<input type="time" name="matchtime" style="margin-left: 10px;" /></label>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <label style="margin-right: 10px;">Team 1 Name <input type="text" name="team1name" style="margin-left: 10px;" /></label>
+      <label style="margin-right: 10px;">Team 2 Name <input type="text" name="team2name" style="margin-left: 10px;" /></label>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <label style="margin-right: 10px;">Team 1 Logo <input type="file" name="team1logoFile" accept="image/*" style="margin-left: 10px;" /></label>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <label style="margin-right: 10px;">Team 2 Logo <input type="file" name="team2logoFile" accept="image/*" style="margin-left: 10px;" /></label>
     </div>
     <div>
-      <label>Team 1 Name <input type="text" name="team1name" /></label>
-      <label>Team 2 Name <input type="text" name="team2name" /></label>
-    </div>
-      <div>
-            <label>Team 1 Logo <input type="file" name="team1logoFile" accept="image/*" /></label>
-        </div>
-        <div>
-            <label>Team 2 Logo <input type="file" name="team2logoFile" accept="image/*" /></label>
-        </div>
-   
-      <input type="submit" id="submit" value="Submit" />
+      <input type="submit" id="submit" value="Submit" style="padding: 5px 10px; margin-left: 10px;" />
     </div>
   </fieldset>
 </form>
@@ -29,8 +29,9 @@
 
 
 
+
 <div>
-    <ul>
+    <ul style="list-style-type: none;">
         @{
             foreach (Match match in ViewBag.Matches)
             {
@@ -39,6 +40,24 @@
                     Team 2: @match.Team2Name<br />
                     Date: @match.Date?.ToShortDateString()<br />
                     Time: @match.Date?.ToString("h:mm tt")<br />
+                    Status: @{
+                        if (match.IsLive.HasValue)
+                        {
+                            if (match.IsLive.Value)
+                            {
+                                <span style="color: green;">Live</span>
+                            }
+                            else
+                            {
+                                <span style="color: red;">Not Live</span>
+                            }
+                        }
+                        else
+                        {
+                            <span style="color: gray;">Unknown</span>
+                        }
+                    }
+                    
 
                      @if (match != null && match.Id != null)
                     {
