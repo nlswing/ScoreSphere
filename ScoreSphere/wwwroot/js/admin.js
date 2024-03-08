@@ -27,13 +27,15 @@ $(document).ready(function () {
 function loadMatches() {
     $.get("/api/Matches", null, function (response) {
         // Sort matches by ascending date.
+        var liveMatches = response.filter(match => match.isLive);
+
         response.sort(function(a, b) {
             var dateA = new Date(a.date);
             var dateB = new Date(b.date);
             return dateA - dateB;
         });
 
-        bindMatches(response);
+        bindMatches(liveMatches);
     });
 }
 
