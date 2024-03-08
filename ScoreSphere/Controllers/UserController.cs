@@ -117,7 +117,7 @@ public class UserController : Controller
 [HttpGet]
 public IActionResult RedirectToProfile(){
   var currentUserId = HttpContext.Session.GetInt32("user_id");
-  if (currentUserId == null){
+  if (currentUserId == null || currentUserId == 0){
     TempData["MESSAGE"] = "You must sign in first.";
     return RedirectToAction("New");
   } else {
